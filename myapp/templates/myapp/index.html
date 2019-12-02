@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap4 -->
+  {% load bootstrap4 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript jquery='full' %}
+  <!-- Bootstrap4 -->
+  <title>٩(ˊᗜˋ*)و</title>
+</head>
+<body>
+<section class="section">
+<br />
+<div class="container" style="padding: 5px">
+  <h4 class="">なんちゃって検索</h4>
+  <form action="" method="POST">
+  {{ search_form.management_form }}
+  {% for form in search_form %}
+  {{ form }}
+    {% endfor %}
+  {% csrf_token %}
+  <button type="submit" class="btn btn-primary">検索</button>
+  </form>
+  <br />
+  <table class="table table-striped table-bordered">
+    <div id="root" class="columns">
+      {% for r in meibo_list %}
+      <tr>
+        <td>{{r.simei}}</td>
+        <td>{{r.simei_kana}}</td>
+        <td>{{r.seibetu}}</td>
+        <td>{{r.blood_gata}}</td>
+        <td>{{r.tanjo_bi}}</td>
+        <td>{{r.chiiki}}</td>
+        <td>{{r.phone_bango}}</td>
+      </tr>
+      {% endfor %}
+      </div>
+  </table>
+</div>
+</section>
+</body>
+{% load static %}
+<script type="text/javascript">
+  document.getElementById('id_form-0-keywords').focus();
+</script>
+</html>
