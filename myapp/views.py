@@ -2,7 +2,7 @@ from django.views import generic
 from django.db.models import Q
 
 from .models import Meibo
-from .forms import SearchFormSet
+from .forms import SearchForm
 
 class IndexView(generic.ListView):
     template_name = 'myapp/index.html'
@@ -15,13 +15,12 @@ class IndexView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['search_form'] = SearchFormSet(self.request.POST or None)
+        context['search_form'] = SearchForm(self.request.POST or None)
         return context
 
     def post(self, request, *args, **kwargs):
-        fms = SearchFormSet(request.POST or None)
-        fms.is_valid()
-        for fm in fms:
+        fm = SearchForm(request.POST or None)
+        if fm.is_valid():
             self.keywords = fm.cleaned_data.get('keywords')
         return self.get(request, *args, **kwargs)
 
