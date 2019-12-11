@@ -42,6 +42,8 @@
 </body>
 {% load static %}
 <script type="text/javascript">
-  document.getElementById('id_form-0-keywords').focus();
+  var txt = document.getElementById('id_keywords');
+  var len = txt.value.length; txt.focus();
+  txt.setSelectionRange(len, len);
 </script>
 </html>
