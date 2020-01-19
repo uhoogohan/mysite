@@ -3,11 +3,13 @@ from django.db.models import Q
 
 from .models import Meibo
 from .forms import SearchForm
+from pure_pagination.mixins import PaginationMixin
 
-class IndexView(generic.ListView):
+class IndexView(PaginationMixin, generic.ListView):
     template_name = 'myapp/index.html'
     context_object_name = 'meibo_list'
     keywords: str = "^$"
+    paginate_by = 8
 
     def get_queryset(self):
         q = self.__get_where__()
@@ -15,14 +17,14 @@ class IndexView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['search_form'] = SearchForm(self.request.POST or None)
+        context['search_form'] = SearchForm(self.request.GET or None)
         return context
 
-    def post(self, request, *args, **kwargs):
-        fm = SearchForm(request.POST or None)
+    def get(self, request, *args, **kwargs):
+        fm = SearchForm(request.GET or None)
         if fm.is_valid():
-            self.keywords = fm.cleaned_data.get('keywords')
-        return self.get(request, *args, **kwargs)
+            self.keywords = request.GET['keywords']
+        return super().get(request, *args, **kwargs)
 
     def __get_where__(self):
         str = self.keywords
